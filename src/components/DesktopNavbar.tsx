@@ -1,12 +1,15 @@
 import { BellIcon, HomeIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, UserButton, SignUpButton } from "@clerk/nextjs";
 import ModeToggle from "./ModeToggle";
 import { currentUser } from "@clerk/nextjs/server";
+import { getNoOfUnreadNotifications } from "@/actions/notifications.actions";
+import NoOfNotifications from "./NoOfNotifications";
 
 async function DesktopNavbar() {
-    const user = await currentUser();  // this is server component so we got user data 
+    const user = await currentUser();  // this is server component so we got user data
+    const notificationCount=await getNoOfUnreadNotifications()
 
     return (
         <div className="hidden md:flex items-center space-x-4">
@@ -22,11 +25,16 @@ async function DesktopNavbar() {
             {user ? (
                 <>
                     <Button variant="ghost" className="flex items-center gap-2" asChild>
-                        <Link href="/notifications">
+                        <Link href="/notifications" className="relative">
                             <BellIcon className="w-4 h-4" />
                             <span className="hidden lg:inline">Notifications</span>
+
+                            {/* Twitter-style notification badge */}
+                            <NoOfNotifications notificationCount={notificationCount} />
                         </Link>
                     </Button>
+
+
                     <Button variant="ghost" className="flex items-center gap-2" asChild>
                         <Link
                             href={`/profile/${user.username ?? user.emailAddresses[0].emailAddress.split("@")[0]
@@ -39,9 +47,13 @@ async function DesktopNavbar() {
                     <UserButton />
                 </>
             ) : (
-                <SignInButton mode="modal">
-                    <Button variant="default">Sign In</Button>
-                </SignInButton>
+                <>
+                    <SignInButton mode="modal">
+                        <Button variant="default">Sign In</Button>
+                    </SignInButton>
+
+                </>
+
             )}
         </div>
     );
