@@ -215,3 +215,6 @@ const router = useRouter();
 revalidate paired with a render caused by state update shows updated data on that page as only revalidate doesnot trigger render and update in the ui
 
 
+after completing and pushing it to github we skip node modules .env and generated folder of prisma
+so for deploying to work we have add a postinstall script 
+
