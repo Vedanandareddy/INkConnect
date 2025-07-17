@@ -11,6 +11,7 @@ import { SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "./ui/button";
 import { HeartIcon, LogInIcon, MessageCircleIcon, SendIcon } from "lucide-react";
 import { Textarea } from "./ui/textarea";
+import CommentComponent from "./CommentComponent";
 
 type Posts = NonNullable<Awaited<ReturnType<typeof getPosts>>>
 type Post = Posts[number]
@@ -247,31 +248,7 @@ function PostCard({ post, userId }: { post: Post; userId: string | null | undefi
               <div className="space-y-4">
                 {/* DISPLAY COMMENTS */}
                 {post.comments.map((comment) => (
-                  <div key={comment.id} className="flex space-x-3 items-start">
-                    <Avatar className="size-8 flex-shrink-0">
-                      <AvatarImage src={comment.author.image ?? "/avatar.png"} />
-                    </Avatar>
-
-                    <div className="flex-1 min-w-0">
-
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-
-                        <span className="font-medium text-sm">{comment.author.name}</span>
-                        <span className="text-sm text-muted-foreground">
-                          @{comment.author.username}
-                        </span>
-                        <span className="text-sm text-muted-foreground">·</span>
-                        <span className="text-sm text-muted-foreground">
-                          {formatDistanceToNow(new Date(comment.createdAt))} ago
-                        </span>
-
-                      </div>
-
-                      <p className="text-sm break-words">{comment.content}</p>
-
-                    </div>
-
-                  </div>
+                  <CommentComponent key={comment.id} comment={comment}/>
                 ))}
               </div>
             </div>

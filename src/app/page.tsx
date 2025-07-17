@@ -7,9 +7,9 @@ import { currentUser } from "@clerk/nextjs/server"
 import { Metadata } from "next"
 
 
-export const metadata:Metadata={
-  title:"INKCONNECT",
-  description:"A Modern Social Media App"
+export const metadata: Metadata = {
+  title: "INKCONNECT",
+  description: "A Modern Social Media App"
 }
 
 export default async function page() {
@@ -19,7 +19,13 @@ export default async function page() {
   const posts = await getPosts()
 
   if (!posts || posts.length === 0) {
-    return <p>No posts available.</p>;
+    return (<div className="grid grid-cols-1 lg:grid-cols-10">
+      <div className=" lg:col-span-6 ">
+        {user ? <CreatePost /> : null}
+
+      </div>
+      <div className=" hidden lg:block lg:col-span-4 mx-2"><WhoToFollowPage /></div>
+    </div>);
   }
 
   return (

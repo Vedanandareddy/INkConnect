@@ -52,6 +52,9 @@ export async function getPosts() {
                     }
                 },
                 comments: {
+                    where:{
+                        parentId:null
+                    },
                     orderBy: { createdAt: "asc" },  // old comments first
                     include: {
                         author: {
@@ -167,7 +170,7 @@ export async function createComment(postId: string, content: string) {
         }
         const post = await prisma.post.findUnique({
             where: {
-                id: postId
+                id: postId,
             }
         })
 
