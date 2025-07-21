@@ -32,6 +32,7 @@ export async function syncUser() {
             }
         })
 
+        revalidatePath("/")
 
         return User
     } catch (error) {
